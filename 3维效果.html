@@ -13,9 +13,7 @@ div#test{
   padding: 100px 0;
   margin: 100px auto;
   border: 1px solid;
-  perspective: 500px;
 }
-
 #banner{
   height: 300px;
   width: 400px;
@@ -43,29 +41,37 @@ body{
     <div id="banner" >三维</div>
   </div>
 <script>
-$('#test').on('mousemove', function(e){
+function library(el,perspective,deg){
+      this.el = el;
+      this.perspective = perspective;
+      this.deg = deg;
+      this.elFather = this.el.parent();
+      this.elFather.css({
+        perspective: this.perspective+'px'
+      })
 
-  var offset = $('#test').offset()
+      elFather.on('mousemove',function(e){
+        var offset = elFather.offset();
 
-  var x = e.pageX - offset.left
-  var y = e.pageY - offset.top
+        var x = e.pageX - offset.left
+        var y = e.pageY - offset.top
 
+        var centerX = elFather.outerWidth() /2
+        var centerY = elFather.outerHeight() /2
 
-  var centerX = $('#test').outerWidth() /2
-  var centerY = $('#test').outerHeight() /2
+        var deltaX = x - centerX
+        var deltaY = y - centerY
 
-  var deltaX = x - centerX
-  var deltaY = y - centerY
+        var percentX = deltaX / centerX
+        var percentY = deltaY / centerY
 
-  var percentX = deltaX / centerX
-  var percentY = deltaY / centerY
-  var deg = 20
-
-  $('#banner').css({
-    transform: 'rotateX('+deg*-percentY + 'deg)'+
-    ' rotateY('+deg*percentX+'deg)'
-  })
-})
+        el.css({
+          transform: 'rotateX('+deg*-percentY + 'deg)'+
+          ' rotateY('+deg*percentX+'deg)'
+        })
+      })
+}
+library($('#banner'),500,20);
 </script>
 </body>
 </html>
