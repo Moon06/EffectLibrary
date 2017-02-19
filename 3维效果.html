@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
+  <title>三维效果</title>
   <style>
   *{box-sizing: border-box;}
 div#test{
@@ -40,7 +40,7 @@ body{
 <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
 
   <div id="test">
-    <div id="banner" >3D</div>
+    <div id="banner" >三维</div>
   </div>
 <script>
 $('#test').on('mousemove', function(e){
@@ -59,10 +59,7 @@ $('#test').on('mousemove', function(e){
 
   var percentX = deltaX / centerX
   var percentY = deltaY / centerY
-
   var deg = 20
-
-
 
   $('#banner').css({
     transform: 'rotateX('+deg*-percentY + 'deg)'+
