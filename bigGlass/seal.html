@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>img-big</title>
+    <style type="text/css">
+        .min-img{
+            width:267px;
+            height:300px;
+            float: left;
+            position: relative;
+            border: 1px solid black;
+        }
+        .min-img img{
+            width: 267px;
+            height:300px;
+        }
+        .max-img{
+            width:450px;
+            height:450px;
+            float: left;
+            display: none;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid black;
+        }
+        .max-img img{
+            position: absolute;
+            margin:0 auto;
+        }
+        .magnify-area{
+            width: 100px;
+            height: 100px;
+            background: #fed136;
+            -webkit-border-radius:50%;
+            -moz-border-radius:50%;
+            border-radius:50%;
+            opacity: 0.5;
+            position:absolute;
+            top:0;
+            left: 0;
+            display: none;
+        }
+    </style>
+
+
+</head>
+<body>
+<div id="magnify">
+    <div class="min-img">
+        <img src="coffe.jpg" alt="smallimg">
+        <div class="magnify-area"></div>
+    </div>
+    <div class="max-img">
+        <img src="coffebig.jpg" alt="bigimg">
+    </div>
+</div>
+<script type="text/javascript">
+    var minImg = document.querySelector(".min-img"),
+            maxImg = document.querySelector(".max-img"),
+            img = document.querySelector(".max-img img"),
+            magnifyArea= document.querySelector(".magnify-area");
+
+    //操作js代码...
+    //      显示,阴影区域和大图
+
+    minImg.onmouseover = function () {
+//      显示magnify-area和maxImg
+        maxImg.style.display = "block";
+        magnifyArea.style.display = "block";
+    };
+
+    //       鼠标离开时隐藏
+    minImg.onmouseout = function(){
+        maxImg.style.display = "none";
+        magnifyArea.style.display = "none";
+    };
+
+    //   计算阴影区域移动范围
+    minImg.onmousemove = function () {
+//          鼠标触摸的点
+        var x = event.clientX-minImg.offsetLeft-magnifyArea.offsetWidth/2;
+        var y = event.clientY - minImg.offsetTop - magnifyArea.offsetHeight/2;
+//          最大移动距离
+        var maxX = minImg.clientWidth - magnifyArea.offsetWidth;
+        var maxY = minImg.clientHeight - magnifyArea.offsetHeight;
+//          判断边界
+        if(x<=0 ){
+            x=0;
+        }else if(x>=maxX){
+            x = maxX;
+        }
+
+        if (y<=0){
+            y=0;
+        }else if(y>=maxY){
+            y = maxY;
+        }
+//          阴影区域的位置
+        magnifyArea.style.left = x+"px";
+        magnifyArea.style.top  = y+"px";
+//          移动比例
+        var mobileX = x/maxX;
+        var mobileY = y/maxY;
+
+//   大图对应显示
+//   对于大图而言 放大镜在小图上移动的比例 相当于img在可显示区域上移动的比例  放大镜右移等于图片左移
+//   也就是本质上为img - max 然而需要负值 则*-1 简化后 为max-img
+
+        img.style.left = mobileX * (maxImg.clientWidth- img.offsetWidth) + "px";
+        img.style.top = mobileY * (maxImg.clientHeight - img.offsetHeight) + "px";
+
+    }
+
+</script>
+</body>
+</html>
